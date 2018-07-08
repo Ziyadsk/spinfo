@@ -1,5 +1,5 @@
 # spinfo
-command line utility for informations about projects 
+Command line utility for informations about projects 
 
 # Usage
 ```python
