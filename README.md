@@ -1,7 +1,7 @@
 # spinfo
 command line utility for informations about projects 
 
-#Usage
+# Usage
 ```python
 python3 spinfo.py [directory]
 ```
