@@ -12,5 +12,5 @@ python3 spinfo.py
 ```
 #### Or to scan specific directory : 
 ```python
-python3 spinfo.py[directory]
-```
+python3 spinfo.py [directory]
+``` 
