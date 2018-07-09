@@ -1,7 +1,7 @@
 # spinfo
 Command line utility for informations about projects 
 
-# screenshot
+# Screenshot
 ![spinfo](https://github.com/Ziyadsk/spinfo/blob/master/screenshots/spinfo.png)
 
 # Usage
@@ -10,7 +10,7 @@ Command line utility for informations about projects
 ```python
 python3 spinfo.py 
 ```
-#### Or to scan specific directory : 
+#### Or to scan a specific directory : 
 ```python
 python3 spinfo.py [directory]
 ``` 
