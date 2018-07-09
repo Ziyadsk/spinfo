@@ -6,11 +6,11 @@ Command line utility for informations about projects
 
 # Usage
 
-#### to scan current directory
+#### To scan current directory :
 ```python
 python3 spinfo.py 
 ```
-#### or to scan specific directory : 
+#### Or to scan specific directory : 
 ```python
 python3 spinfo.py[directory]
 ```
