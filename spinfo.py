@@ -10,7 +10,7 @@ dfile = {}
 dsize = {}
 dir_sum = 0 
 file_sum = 0
-
+ignored_files = 0 
 lang_dic = {
 	"md" : "Markdown",
 	"sh" : "Shell script",
@@ -38,8 +38,10 @@ for dirpath , dirnames , filenames in os.walk(path):
 		if not directory.startswith('.'):
 			dir_sum += 1
 	for file in filenames:
-		if not file.startswith('.'):
-			file_sum += 1
+		if directory.startswith('.'):
+			file_sum+=1  
+		else:
+			ignored_files+=1 
 
 	for file in filenames:
 		fullpath = os.path.join(dirpath,file)
@@ -52,7 +54,7 @@ for dirpath , dirnames , filenames in os.walk(path):
 				except IndexError:
 					pass 
 				if ex in lang_dic.keys():
-					ex = lang_dic[ex]
+					ex = lang_dic[ex].capitalize() 
 
 				if ex in d.keys():
 					d[ex]+= sum(1 for line in open(fullpath))
@@ -64,8 +66,9 @@ for dirpath , dirnames , filenames in os.walk(path):
 					dfile[ex] = 1 
 		except Exception:
 			pass		
-print(f'directories : \u001b[33m{dir_sum}\u001b[0m')	
-print(f'files  : \u001b[33m{file_sum}\u001b[0m')			
+print(f'Directories : \u001b[33m{dir_sum}\u001b[0m')	
+print(f'Files  : \u001b[33m{file_sum}\u001b[0m')	
+print(f'binaries/Ignored: \u001b[33m{ignored_files}\u001b[0m')		
 sep()
 print('\u001b[33;1mLanguage'.ljust(27),
 	'Files'.ljust(20),
