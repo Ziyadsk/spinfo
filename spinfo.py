@@ -10,7 +10,10 @@ dfile = {}
 dsize = {}
 dir_sum = 0 
 file_sum = 0
+ignored_dirs = 0 
 ignored_files = 0 
+git_init = False
+
 lang_dic = {
 	"md" : "Markdown",
 	"sh" : "Shell script",
@@ -22,8 +25,13 @@ lang_dic = {
 	"py":"Python",
 	"cs":"C#",
 	"rb":"ruby",
-	"pl":"Perl"
+	"pl":"Perl",
+	"rs":"Rust",
+	"kt":"Kotlin",
+	"kts":"Kotlin script",
+	"clj":"Clojure"
 }
+
 if len(sys.argv) < 2  :
 	path = os.getcwd()
 else:
@@ -33,15 +41,21 @@ else:
 	else:
 		print('Sorry Path does not exist') 
 		sys.exit(1)
-for dirpath , dirnames , filenames in os.walk(path):
+
+for dirpath , dirnames , filenames in os.walk(path):	
+
 	for directory in dirnames:
+		if directory == '.git':
+			git_init = True
 		if not directory.startswith('.'):
 			dir_sum += 1
-	for file in filenames:
-		if directory.startswith('.'):
-			file_sum+=1  
 		else:
-			ignored_files+=1 
+			ignored_dirs+=1 
+	for file in filenames:
+		if not file.startswith('.'):
+			file_sum+=1
+		else:
+			ignored_files+=1  
 
 	for file in filenames:
 		fullpath = os.path.join(dirpath,file)
@@ -68,7 +82,9 @@ for dirpath , dirnames , filenames in os.walk(path):
 			pass		
 print(f'Directories : \u001b[33m{dir_sum}\u001b[0m')	
 print(f'Files  : \u001b[33m{file_sum}\u001b[0m')	
-print(f'binaries/Ignored: \u001b[33m{ignored_files}\u001b[0m')		
+print(f'Binaries/Ignored:\u001b[33m {ignored_dirs} dir(s) , {ignored_files} file(s)\u001b[0m')
+print(f'Git : { "(YES)" if git_init else "NO "}')	
+
 sep()
 print('\u001b[33;1mLanguage'.ljust(27),
 	'Files'.ljust(20),
@@ -90,7 +106,7 @@ for i in d:
 	print(f'{i}'.ljust(20),
 		f'{dfile[i]}'.ljust(20),
 		f'{ d[i] if d[i] != 0 else "empty" }'.ljust(20),
-		f'{dsize[i]} {b}\u001b[0m'.ljust(20))
+		f'{dsize[i]} {b}\u001b[0m'.ljust(20)) 
 
 total_lines = sum(d.values())
 sep()
