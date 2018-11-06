@@ -14,6 +14,7 @@ ignored_dirs = 0
 ignored_files = 0 
 git_init = False
 
+# extension dictionary
 lang_dic = {
 	"md" : "Markdown",
 	"sh" : "Shell script",
@@ -42,6 +43,7 @@ else:
 		print('Sorry Path does not exist') 
 		sys.exit(1)
 
+# walk directory and subdirectroy walk
 for dirpath , dirnames , filenames in os.walk(path):	
 
 	for directory in dirnames:
@@ -80,11 +82,14 @@ for dirpath , dirnames , filenames in os.walk(path):
 					dfile[ex] = 1 
 		except Exception:
 			pass		
-print(f'Directories : \u001b[33m{dir_sum}\u001b[0m')	
-print(f'Files  : \u001b[33m{file_sum}\u001b[0m')	
-print(f'Binaries/Ignored:\u001b[33m {ignored_dirs} dir(s) , {ignored_files} file(s)\u001b[0m')
-print(f'Git : { "(YES)" if git_init else "NO "}')	
+print(f'Directories : \u001b[33m{dir_sum}\u001b[0m'.ljust(50),
+	f'Files : \u001b[33m{file_sum}\u001b[0m',
+	f'\nBinaries/Ignored:\u001b[33m {ignored_dirs} dir(s) , {ignored_files} file(s)\u001b[0m',
+	f'\nGit : { "(YES)" if git_init else "NO "}'
+)	
+	
 
+# display 
 sep()
 print('\u001b[33;1mLanguage'.ljust(27),
 	'Files'.ljust(20),
