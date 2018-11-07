@@ -37,14 +37,14 @@ if len(sys.argv) < 2  :
 	path = os.getcwd()
 else:
 	path = sys.argv[1]
-	if(os.path.exists(path)):
-		pass 
-	else:
+	if not os.path.exists(path): 
 		print('Sorry Path does not exist') 
 		sys.exit(1)
 
 # walk directory and subdirectroy walk
 for dirpath , dirnames , filenames in os.walk(path):	
+	if '.git' in dirpath:
+		continue
 
 	for directory in dirnames:
 		if directory == '.git':
@@ -96,28 +96,30 @@ print('\u001b[33;1mLanguage'.ljust(27),
 	'Lines'.ljust(20),
 	'Size\u001b[0m'.ljust(20))
 sep()
-total_size = sum(dsize.values()) // 1024
-total_size = str(total_size) + 'KB' 
+
+total_size = sum(dsize.values()) // 1024 if  sum(dsize.values()) // 1024 != 0 else sum(dsize.values())
+
 for i in d:
 	if (dsize[i] / 1024 ) > 1:
 		dsize[i] = dsize[i] // 1024
-		b = 'KB'
+		b = ' KB'
 	elif (dsize[i] / (1024*1024)) > 1 :
 		dsize[i] = dsize[i] // (1024*1024)
-		b = 'MB'
+		b = ' MB'
 	else:
-		b = 'B'
+		b = ' B'
 
 	print(f'{i}'.ljust(20),
 		f'{dfile[i]}'.ljust(20),
 		f'{ d[i] if d[i] != 0 else "empty" }'.ljust(20),
-		f'{dsize[i]} {b}\u001b[0m'.ljust(20)) 
+		f'{dsize[i]}{b}\u001b[0m'.ljust(20)) 
 
+total_size = str(total_size) + b
 total_lines = sum(d.values())
-sep()
 
+sep()
 print(f'Total'.ljust(20),
 	f'{sum(dfile.values())}'.ljust(20),
 	f'{total_lines}'.ljust(20),
-	f'{total_size}'.ljust(20))
+	f'{total_size}')
 sep()
