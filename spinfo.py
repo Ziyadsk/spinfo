@@ -1,5 +1,6 @@
 import os 
 import sys 
+import subprocess 
 
 def sep():
 	print('\u001b[33;1m-\u001b[0m'*70)
@@ -44,6 +45,7 @@ else:
 # walk directory and subdirectroy walk
 for dirpath , dirnames , filenames in os.walk(path):	
 	if '.git' in dirpath:
+		git_init = True 
 		continue
 
 	for directory in dirnames:
@@ -82,10 +84,14 @@ for dirpath , dirnames , filenames in os.walk(path):
 					dfile[ex] = 1 
 		except Exception:
 			pass		
+
+commits = subprocess.check_output('git rev-list --count HEAD',shell=True)
+commits = commits.decode('utf8')
+# header 
 print(f'Directories : \u001b[33m{dir_sum}\u001b[0m'.ljust(50),
 	f'Files : \u001b[33m{file_sum}\u001b[0m',
 	f'\nBinaries/Ignored:\u001b[33m {ignored_dirs} dir(s) , {ignored_files} file(s)\u001b[0m',
-	f'\nGit : { "(YES)" if git_init else "NO "}'
+	f'\nGit : { f"(YES) (commits : {commits.strip()} )"  if git_init else "NO "}'
 )	
 	
 
@@ -117,6 +123,7 @@ for i in d:
 total_size = str(total_size) + b
 total_lines = sum(d.values())
 
+#print infos
 sep()
 print(f'Total'.ljust(20),
 	f'{sum(dfile.values())}'.ljust(20),
