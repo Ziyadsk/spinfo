@@ -1,16 +1,23 @@
 import os 
 import sys 
 import subprocess 
+import time
+
+print("Cheking ..")
+# os.system("printf '\033c'")
+# bench 
+start = time.time() 
 
 def sep():
 	print('\u001b[33;1m-\u001b[0m'*70)
-
+	
 file_lines = 0
 d = {}
 dfile = {}
 dsize = {}
 dir_sum = 0 
 file_sum = 0
+commits = 0
 ignored_dirs = 0 
 ignored_files = 0 
 git_init = False
@@ -22,6 +29,7 @@ lang_dic = {
 	"hs" : "Haskell",
 	"cpp" : "C++",
 	"cc": "C++",
+	"h":"C/C++ Header",
 	"ts":"TypeScript",
 	"js":"JavaScript",
 	"py":"Python",
@@ -31,7 +39,8 @@ lang_dic = {
 	"rs":"Rust",
 	"kt":"Kotlin",
 	"kts":"Kotlin script",
-	"clj":"Clojure"
+	"clj":"Clojure",
+	"go":"Go"
 }
 
 if len(sys.argv) < 2  :
@@ -45,7 +54,7 @@ else:
 # walk directory and subdirectroy walk
 for dirpath , dirnames , filenames in os.walk(path):	
 	if '.git' in dirpath:
-		git_init = True 
+		git_init = True
 		continue
 
 	for directory in dirnames:
@@ -70,7 +79,7 @@ for dirpath , dirnames , filenames in os.walk(path):
 				try:
 					ex = file.split('.')[1]
 				except IndexError:
-					pass 
+					pass
 				if ex in lang_dic.keys():
 					ex = lang_dic[ex].capitalize() 
 
@@ -85,16 +94,17 @@ for dirpath , dirnames , filenames in os.walk(path):
 		except Exception:
 			pass		
 
-commits = subprocess.check_output('git rev-list --count HEAD',shell=True)
-commits = commits.decode('utf8')
+if git_init:
+	commits = subprocess.check_output('git rev-list --count HEAD',shell=True)
+	commits = commits.decode("utf-8")
+
 # header 
 print(f'Directories : \u001b[33m{dir_sum}\u001b[0m'.ljust(50),
 	f'Files : \u001b[33m{file_sum}\u001b[0m',
 	f'\nBinaries/Ignored:\u001b[33m {ignored_dirs} dir(s) , {ignored_files} file(s)\u001b[0m',
-	f'\nGit : { f"(YES) (commits : {commits.strip()} )"  if git_init else "NO "}'
+	f'\nGit : { f"(YES) (commits : {commits.strip()})" if git_init else "NO"}'
 )	
 	
-
 # display 
 sep()
 print('\u001b[33;1mLanguage'.ljust(27),
@@ -103,7 +113,7 @@ print('\u001b[33;1mLanguage'.ljust(27),
 	'Size\u001b[0m'.ljust(20))
 sep()
 
-total_size = sum(dsize.values()) // 1024 if  sum(dsize.values()) // 1024 != 0 else sum(dsize.values())
+total_size = sum(dsize.values()) if sum(dsize.values()) // 1024 != 0 else sum(dsize.values())
 
 for i in d:
 	if (dsize[i] / 1024 ) > 1:
@@ -115,7 +125,7 @@ for i in d:
 	else:
 		b = ' B'
 
-	print(f'{i}'.ljust(20),
+	print(f'{i.capitalize()}'.ljust(20),
 		f'{dfile[i]}'.ljust(20),
 		f'{ d[i] if d[i] != 0 else "empty" }'.ljust(20),
 		f'{dsize[i]}{b}\u001b[0m'.ljust(20)) 
@@ -130,3 +140,4 @@ print(f'Total'.ljust(20),
 	f'{total_lines}'.ljust(20),
 	f'{total_size}')
 sep()
+print(f" {time.time() - start}")  
