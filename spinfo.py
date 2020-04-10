@@ -8,6 +8,18 @@ print("Cheking ..")
 # bench 
 start = time.time() 
 
+# function that process the size of bytes and return a size enotation
+def size_notation(input_char):
+	if input_char > 1000000 :
+		input_char = input_char // 1000000
+		size_char = ' MB'
+	elif input_char > 1000 :
+		input_char = input_char // 1024
+		size_char = ' KB'
+	else:
+		size_char = ' B'
+	return f"{input_char}{size_char}"
+
 def sep():
 	print('\u001b[33;1m-\u001b[0m'*70)
 	
@@ -113,24 +125,15 @@ print('\u001b[33;1mLanguage'.ljust(27),
 	'Size\u001b[0m'.ljust(20))
 sep()
 
-total_size = sum(dsize.values()) if sum(dsize.values()) // 1024 != 0 else sum(dsize.values())
+# total size 
+total_size_notation = size_notation(sum(dsize.values()))
 
 for i in d:
-	if (dsize[i] / 1024 ) > 1:
-		dsize[i] = dsize[i] // 1024
-		b = ' KB'
-	elif (dsize[i] / (1024*1024)) > 1 :
-		dsize[i] = dsize[i] // (1024*1024)
-		b = ' MB'
-	else:
-		b = ' B'
-
 	print(f'{i.capitalize()}'.ljust(20),
 		f'{dfile[i]}'.ljust(20),
 		f'{ d[i] if d[i] != 0 else "empty" }'.ljust(20),
-		f'{dsize[i]}{b}\u001b[0m'.ljust(20)) 
+		f'{size_notation(dsize[i])}\u001b[0m'.ljust(20)) 
 
-total_size = str(total_size) + b
 total_lines = sum(d.values())
 
 #print infos
@@ -138,6 +141,7 @@ sep()
 print(f'Total'.ljust(20),
 	f'{sum(dfile.values())}'.ljust(20),
 	f'{total_lines}'.ljust(20),
-	f'{total_size}')
+	f'{total_size_notation}'
+)
 sep()
-print(f" {time.time() - start}")  
+print(f"[DONE in {time.time() - start} ")  
