@@ -21,7 +21,7 @@ def size_notation(input_char):
 		size_char = ' KB'
 	else:
 		size_char = ' B'
-	return f"{input_char}{size_char}"
+	return f'{input_char}'.rjust(10) + f'{size_char}'
 
 # horizontal line to separate section
 
@@ -35,8 +35,8 @@ def header_banner() :
 	banner += full_line
 	banner += '┓'
 	banner += "\n┃"
-	menu  = '\u001b[33mLanguage'.rjust(15)+ 'Files'.rjust(15) + 'Lines'.rjust(15) + 'Size\u001b[0m'.rjust(20)
-	banner += menu + '┃'.rjust(15)
+	menu  = '\u001b[33mLanguage'.rjust(15)+ 'Files'.rjust(15) + 'Lines'.rjust(15) + 'Size\u001b[0m'.rjust(22)
+	banner += menu + '┃'.rjust(13)
 	banner += '\n┗'
 	banner += full_line + '┛'
 	print(banner)
@@ -45,7 +45,7 @@ def draw_information(d):
 
 	info_string = '┏' + "━"*70 + '┓\n'
 	for i in d:
-		info_string += '┃' + f' . {i}'.capitalize().ljust(22) + f'{dfile[i]}'.ljust(14) + f'{ d[i] if d[i] != 0 else "empty" }'.ljust(17) + f'{size_notation(dsize[i])}\u001b[0m'.ljust(15) +'┃'.rjust(7) + '\n'
+		info_string += '┃' + f' . {i}'.capitalize().ljust(22) + f'{dfile[i]}'.ljust(14) + f'{ d[i] if d[i] != 0 else "empty" }'.ljust(10) + f'{size_notation(dsize[i])}\u001b[0m'.ljust(28) +'┃' + '\n'
 	info_string += '┗' + "━"*70 + '┛'
 	print(info_string)
 
@@ -174,8 +174,8 @@ total_lines = sum(d.values())
 # display the total
 footer_banner(f'Total'.ljust(20) + 
 	f'{sum(dfile.values())}'.ljust(14) + 
-	f'{total_lines}'.ljust(17) + 
-	f'{total_size_notation}'.ljust(17)
+	f'{total_lines}'.ljust(10) + 
+	f'{total_size_notation}'.ljust(24)
 )
 
 print(f"[DONE in { (time.time() - start):.2f} second(s)]")
