@@ -4,6 +4,9 @@ import subprocess
 import time
 
 print("Cheking ..")
+ 
+sys.stdout.write('\x1b[1A')
+sys.stdout.write('\x1b[2K') 
 # os.system("printf '\033c'")
 # bench 
 start = time.time() 
@@ -20,9 +23,47 @@ def size_notation(input_char):
 		size_char = ' B'
 	return f"{input_char}{size_char}"
 
-def sep():
-	print('\u001b[33;1m-\u001b[0m'*70)
-	
+# horizontal line to separate section
+
+
+def line_separtator():
+	print("━"*70)	
+def header_banner() :
+	banner = ""
+	full_line = "━"*70
+	banner += "\033[0m┏"
+	banner += full_line
+	banner += '┓'
+	banner += "\n┃"
+	menu  = '\u001b[33mLanguage'.rjust(15)+ 'Files'.rjust(15) + 'Lines'.rjust(15) + 'Size\u001b[0m'.rjust(20)
+	banner += menu + '┃'.rjust(15)
+	banner += '\n┗'
+	banner += full_line + '┛'
+	print(banner)
+
+def draw_information(d):
+
+	info_string = '┏' + "━"*70 + '┓\n'
+	for i in d:
+		info_string += '┃' + f' . {i}'.capitalize().ljust(22) + f'{dfile[i]}'.ljust(14) + f'{ d[i] if d[i] != 0 else "empty" }'.ljust(17) + f'{size_notation(dsize[i])}\u001b[0m'.ljust(15) +'┃'.rjust(7) + '\n'
+	info_string += '┗' + "━"*70 + '┛'
+	print(info_string)
+
+def footer_banner(content):
+
+	banner = ""
+	full_line = "━"*70
+	banner += "\033[0m┏"
+	banner += full_line
+	banner += '┓'
+	banner += "\n┃  "
+	menu  = content
+	banner += menu 
+	banner +=  '┃'
+	banner += '\n┗'
+	banner += full_line + '┛'
+	print(banner)
+
 file_lines = 0
 d = {}
 dfile = {}
@@ -52,7 +93,10 @@ lang_dic = {
 	"kt":"Kotlin",
 	"kts":"Kotlin script",
 	"clj":"Clojure",
-	"go":"Go"
+	"go":"Go",
+	"php":"PHP",
+	"vim":"VimScript",
+	"jl" : "Julia",
 }
 
 if len(sys.argv) < 2  :
@@ -118,30 +162,20 @@ print(f'Directories : \u001b[33m{dir_sum}\u001b[0m'.ljust(50),
 )	
 	
 # display 
-sep()
-print('\u001b[33;1mLanguage'.ljust(27),
-	'Files'.ljust(20),
-	'Lines'.ljust(20),
-	'Size\u001b[0m'.ljust(20))
-sep()
-
+header_banner() 
 # total size 
 total_size_notation = size_notation(sum(dsize.values()))
 
-for i in d:
-	print(f'{i.capitalize()}'.ljust(20),
-		f'{dfile[i]}'.ljust(20),
-		f'{ d[i] if d[i] != 0 else "empty" }'.ljust(20),
-		f'{size_notation(dsize[i])}\u001b[0m'.ljust(20)) 
+# display information
+draw_information(d)
 
 total_lines = sum(d.values())
 
-#print infos
-sep()
-print(f'Total'.ljust(20),
-	f'{sum(dfile.values())}'.ljust(20),
-	f'{total_lines}'.ljust(20),
-	f'{total_size_notation}'
+# display the total
+footer_banner(f'Total'.ljust(20) + 
+	f'{sum(dfile.values())}'.ljust(14) + 
+	f'{total_lines}'.ljust(17) + 
+	f'{total_size_notation}'.ljust(17)
 )
-sep()
-print(f"[DONE in {time.time() - start} ")  
+
+print(f"[DONE in { (time.time() - start):.2f} second(s)]")
