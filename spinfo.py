@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os 
 import sys 
 import subprocess 
@@ -44,7 +46,9 @@ def draw_information(d):
 	info_string = '┃' + " "*70 + '┃\n'
 	for i in d:
 		info_string += '┃' + '\033[33;1m' + '  . ' + '\033[0m' f'{i.capitalize()}'.ljust(22) + f'{dfile[i]}'.ljust(14) + f'{ d[i] if d[i] != 0 else "empty" }'.ljust(10) + f'{size_notation(dsize[i])}'.ljust(24) +'┃' + '\n'
+		
 	info_string += '┃' + " "*70 + '┃'
+	
 	print(info_string)
 
 def footer_banner(content):
@@ -102,7 +106,7 @@ if len(sys.argv) < 2  :
 else:
 	path = sys.argv[1]
 	if not os.path.exists(path): 
-		print('Sorry Path does not exist') 
+		print('[\033[31;1mERROR\033[0m] Invalid or inexistant path') 
 		sys.exit(1)
 
 # walk directory and subdirectroy walk
