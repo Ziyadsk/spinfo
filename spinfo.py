@@ -43,7 +43,7 @@ def draw_information(d):
 	
 	info_string = '┃' + " "*70 + '┃\n'
 	for i in d:
-		info_string += '┃' + '\033[33;1m' + '  . ' + '\033[0m' f'{i}'.capitalize().ljust(22) + f'{dfile[i]}'.ljust(14) + f'{ d[i] if d[i] != 0 else "empty" }'.ljust(10) + f'{size_notation(dsize[i])}'.ljust(24) +'┃' + '\n'
+		info_string += '┃' + '\033[33;1m' + '  . ' + '\033[0m' f'{i.capitalize()}'.ljust(22) + f'{dfile[i]}'.ljust(14) + f'{ d[i] if d[i] != 0 else "empty" }'.ljust(10) + f'{size_notation(dsize[i])}'.ljust(24) +'┃' + '\n'
 	info_string += '┃' + " "*70 + '┃'
 	print(info_string)
 
