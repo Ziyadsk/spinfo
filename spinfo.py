@@ -4,13 +4,11 @@ import subprocess
 import time
 
 print("Cheking ..")
- 
+
 sys.stdout.write('\x1b[1A')
 sys.stdout.write('\x1b[2K') 
-# os.system("printf '\033c'")
 # bench 
 start = time.time() 
-
 # function that process the size of bytes and return a size enotation
 def size_notation(input_char):
 	if input_char > 1000000 :
@@ -29,33 +27,33 @@ def size_notation(input_char):
 def line_separtator():
 	print("━"*70)	
 def header_banner() :
-	banner = ""
+	banner = ''
 	full_line = "━"*70
-	banner += "\033[0m┏"
+	banner += "┏"
 	banner += full_line
 	banner += '┓'
 	banner += "\n┃"
-	menu  = '\u001b[33mLanguage'.rjust(15)+ 'Files'.rjust(15) + 'Lines'.rjust(15) + 'Size\u001b[0m'.rjust(22)
+	menu  = '\033[33;1mLanguage'.rjust(18) + '\033[0m\033[33;1m' + 'Files'.rjust(15) + '\033[0m\033[33;1m' + 'Lines'.rjust(15) + '\033[0m\033[33;1m' + 'Size'.rjust(17) + '\033[0m' 
 	banner += menu + '┃'.rjust(13)
-	banner += '\n┗'
-	banner += full_line + '┛'
+	banner += '\n┣'
+	banner += full_line + '┫'
 	print(banner)
 
 def draw_information(d):
-
-	info_string = '┏' + "━"*70 + '┓\n'
+	
+	info_string = '┃' + " "*70 + '┃\n'
 	for i in d:
-		info_string += '┃' + f' . {i}'.capitalize().ljust(22) + f'{dfile[i]}'.ljust(14) + f'{ d[i] if d[i] != 0 else "empty" }'.ljust(10) + f'{size_notation(dsize[i])}\u001b[0m'.ljust(28) +'┃' + '\n'
-	info_string += '┗' + "━"*70 + '┛'
+		info_string += '┃' + '\033[33;1m' + '  . ' + '\033[0m' f'{i}'.capitalize().ljust(22) + f'{dfile[i]}'.ljust(14) + f'{ d[i] if d[i] != 0 else "empty" }'.ljust(10) + f'{size_notation(dsize[i])}'.ljust(24) +'┃' + '\n'
+	info_string += '┃' + " "*70 + '┃'
 	print(info_string)
 
 def footer_banner(content):
 
 	banner = ""
 	full_line = "━"*70
-	banner += "\033[0m┏"
+	banner += "┣"
 	banner += full_line
-	banner += '┓'
+	banner += '┫'
 	banner += "\n┃  "
 	menu  = content
 	banner += menu 
@@ -155,10 +153,10 @@ if git_init:
 	commits = commits.decode("utf-8")
 
 # header 
-print(f'Directories : \u001b[33m{dir_sum}\u001b[0m'.ljust(50),
-	f'Files : \u001b[33m{file_sum}\u001b[0m',
-	f'\nBinaries/Ignored:\u001b[33m {ignored_dirs} dir(s) , {ignored_files} file(s)\u001b[0m',
-	f'\nGit : { f"(YES) (commits : {commits.strip()})" if git_init else "NO"}'
+print(f' Directories : \u001b[32m{dir_sum}\u001b[0m'.ljust(50),
+	f'  Files : \u001b[32m{file_sum}\u001b[0m',
+	f'\n Binaries/Ignored:\u001b[32m {ignored_dirs} dir(s) , {ignored_files} file(s)\u001b[0m',
+	f'\n Git : { f"(YES) (commits : {commits.strip()})" if git_init else "NO"}'
 )	
 	
 # display 
@@ -172,10 +170,9 @@ draw_information(d)
 total_lines = sum(d.values())
 
 # display the total
-footer_banner(f'Total'.ljust(20) + 
-	f'{sum(dfile.values())}'.ljust(14) + 
+footer_banner(' Total'.ljust(20) + f'{sum(dfile.values())}'.ljust(14) + 
 	f'{total_lines}'.ljust(10) + 
-	f'{total_size_notation}'.ljust(24)
+	f'{total_size_notation}'.ljust(24) + "\033[0m"
 )
 
-print(f"[DONE in { (time.time() - start):.2f} second(s)]")
+print(f" [DONE in { (time.time() - start):.2f} second(s)]")
