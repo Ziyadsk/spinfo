@@ -112,8 +112,6 @@ for dirpath , dirnames , filenames in os.walk(path):
 		continue
 
 	for directory in dirnames:
-		if directory == '.git':
-			git_init = True
 		if not directory.startswith('.'):
 			dir_sum += 1
 		else:
@@ -149,8 +147,8 @@ for dirpath , dirnames , filenames in os.walk(path):
 			pass		
 
 if git_init:
-	commits = subprocess.check_output('git rev-list --count HEAD',shell=True)
-	commits = commits.decode("utf-8")
+	commits = subprocess.run('git rev-list --count HEAD',shell=True,capture_output=True)
+	commits = commits.stdout.decode("utf-8")
 
 # header 
 print(f' Directories : \u001b[32m{dir_sum}\u001b[0m'.ljust(50),
