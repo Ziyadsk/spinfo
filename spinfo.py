@@ -4,6 +4,14 @@ import os
 import sys 
 import subprocess 
 import time
+import signal
+
+def program_interupted_function(signum, frame):
+	print('[\033[33;1mQUIT\033[0m]') 
+	exit(1)
+
+signal.siginterrupt(signal.SIGINT,False)
+signal.signal(signal.SIGINT,program_interupted_function)
 
 print("Cheking ..")
 
